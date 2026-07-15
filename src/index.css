@@ -1,7 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+<<<<<<< HEAD
+=======
 @import "tailwindcss";
+>>>>>>> d107f67a3b12ff59cd3aadcb9eaab2b6cd262257
 .no-scrollbar::-webkit-scrollbar {
   width: 0;
   display: none;

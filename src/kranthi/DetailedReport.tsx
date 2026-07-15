@@ -5,10 +5,15 @@ import { GoDownload } from "react-icons/go";
 import { LiaFilterSolid } from "react-icons/lia";
 import Chart from "react-apexcharts";
 import SideNavBar from "./components/SideNavBar";
+<<<<<<< HEAD
+
+const DetailedReport: React.FC = () => {
+=======
 import { useNavigate } from "react-router-dom";
 
 const DetailedReport: React.FC = () => {
   const navigate = useNavigate();
+>>>>>>> d107f67a3b12ff59cd3aadcb9eaab2b6cd262257
   const cards = [
     {
       title: "NET TAKE REVENUE",
@@ -767,8 +772,11 @@ const DetailedReport: React.FC = () => {
               className="w-full bg-slate-50 border border-slate-200 text-xs rounded-full pl-9 pr-4 py-1.5 text-slate-700 placeholder-slate-400 focus:outline-none focus:border-slate-300"
             />
           </div>
+<<<<<<< HEAD
+=======
           {/* shift to other project */}
           <button className='w-fit px-4 py-2 rounded-xl text-white bg-gray-900 cursor-pointer hover:bg-black transition-colors duration-200 font-semibold text-sm shadow-sm' onClick={() => navigate('/')}>Switch Task</button>
+>>>>>>> d107f67a3b12ff59cd3aadcb9eaab2b6cd262257
 
           {/* Bell Notifications */}
           <button className="relative text-slate-500 hover:text-slate-800 transition p-1">
