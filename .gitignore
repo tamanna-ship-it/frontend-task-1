@@ -38,3 +38,14 @@ out/
 
 # Vite cache
 .vite/
+
+# ESLint cache
+.eslintcache
+
+# OS metadata
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Disabled Git directory
+.git_disabled/
