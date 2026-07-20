@@ -1,5 +1,5 @@
-import React from 'react';
-import { Search, Bell, PanelLeft } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Search, Bell, PanelLeft, ChevronDown, User, Settings, LogOut } from 'lucide-react';
 import companyLogo from '../assets/company.png';
 
 interface HeaderProps {
@@ -8,6 +8,22 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ onToggleSidebar, isSidebarOpen }) => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, []);
 
   return (
     <header className="h-20 bg-white border-b border-gray-100 flex items-center justify-between px-8 select-none z-10">
@@ -52,13 +68,49 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, isSidebarOpen }) => {
         </button>
 
         {/* User Info / Profile */}
-        <div className="flex items-center gap-3 pl-2 border-l border-gray-100 cursor-pointer group">
-          <div className="w-10 h-10 rounded-full bg-amber-100 border border-amber-200 flex items-center justify-center font-bold text-amber-800 text-sm shadow-sm transition-transform group-hover:scale-[1.02]">
-            AD
-          </div>
-          <div className="flex flex-col text-left">
-            <span className="text-sm font-semibold text-gray-800 group-hover:text-violet-600 transition-colors">Profile</span>
-          </div>
+        <div className="relative flex items-center" ref={dropdownRef}>
+          <button
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            className="flex items-center gap-3 pl-2 border-l border-gray-100 cursor-pointer group focus:outline-none bg-transparent border-0 py-1"
+            aria-haspopup="true"
+            aria-expanded={isDropdownOpen}
+          >
+            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-violet-600 to-indigo-500 flex items-center justify-center font-bold text-white text-sm shadow-md">
+              RA
+            </div>
+            <div className="flex items-center gap-1.5 text-left">
+              <span className="text-sm font-semibold text-gray-800 group-hover:text-violet-600 transition-colors">Rajesh</span>
+              <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+            </div>
+          </button>
+          {isDropdownOpen && (
+            <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-2xl border border-gray-100 shadow-xl py-1.5 z-50 origin-top-right overflow-hidden">
+              {/* Header profile info */}
+              <div className="px-4 py-3 text-left">
+                <p className="text-sm font-bold text-gray-900 leading-tight">Rajesh</p>
+                <p className="text-xs text-gray-500 font-medium mt-1">Glamour Studio</p>
+              </div>
+              <div className="border-t border-gray-100 my-1" />
+
+              {/* Menu Options */}
+              <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors text-left focus:outline-none border-0 bg-transparent cursor-pointer">
+                <User className="w-4 h-4 text-gray-500" />
+                <span className="font-medium">Profile</span>
+              </button>
+
+              <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors text-left focus:outline-none border-0 bg-transparent cursor-pointer">
+                <Settings className="w-4 h-4 text-gray-500" />
+                <span className="font-medium">Settings</span>
+              </button>
+
+              <div className="border-t border-gray-100 my-1" />
+
+              <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-rose-600 hover:bg-rose-50/50 transition-colors text-left focus:outline-none border-0 bg-transparent cursor-pointer">
+                <LogOut className="w-4 h-4 text-rose-500" />
+                <span className="font-semibold">Logout</span>
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </header>

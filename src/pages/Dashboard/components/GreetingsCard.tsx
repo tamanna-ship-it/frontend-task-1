@@ -15,7 +15,7 @@ const GreetingsCard: React.FC<GreetingsCardProps> = ({ clockInTime, clockOutTime
       <div className="absolute right-0 bottom-0 w-48 h-48 bg-violet-600/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-0 left-0 w-32 h-32 bg-amber-500/5 rounded-full blur-2xl pointer-events-none" />
 
-      <div className="flex items-center gap-5 z-10 w-full md:w-auto">
+      <div className="flex items-center gap-5 w-full md:w-auto">
         {/* Avatar (Grey Circle) */}
         <div className="w-16 h-16 rounded-full bg-[#2a2d31] flex-shrink-0" />
         
@@ -34,7 +34,7 @@ const GreetingsCard: React.FC<GreetingsCardProps> = ({ clockInTime, clockOutTime
       </div>
 
       {/* Clock In / Out Stats Card */}
-      <div className="bg-[#121416] text-white rounded-2xl px-6 py-4 flex items-center justify-center border border-[#2a2e35] shadow-xl relative overflow-hidden z-10 w-full md:w-auto gap-5 min-w-[240px]">
+      <div className="bg-[#121416] text-white rounded-2xl px-6 py-4 flex items-center justify-center border border-[#2a2e35] shadow-xl relative overflow-hidden w-full md:w-auto gap-5 min-w-[240px]">
         <div className="flex flex-col items-center flex-1">
           <div className="text-2xl font-black text-white flex items-baseline">
             {inParts[1]}
