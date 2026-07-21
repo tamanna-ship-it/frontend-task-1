@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useState, useMemo } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 import logo from '@/assets/logo.png';
 import { employeeMenuItems } from './menu/employeeMenu';
+import { ownerMenuItems } from './menu/ownerMenu';
+import { managerMenuItems } from './menu/managerMenu';
 
 interface SidebarProps {
   isOpen?: boolean;
@@ -11,6 +13,17 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [tooltipPos, setTooltipPos] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
+  const location = useLocation();
+
+  const menuItems = useMemo(() => {
+    if (location.pathname.startsWith('/owner')) {
+      return ownerMenuItems;
+    }
+    if (location.pathname.startsWith('/manager')) {
+      return managerMenuItems;
+    }
+    return employeeMenuItems;
+  }, [location.pathname]);
 
   return (
     <aside
@@ -42,7 +55,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
 
       {/* Navigation Links */}
       <nav className="flex-1 px-4 py-6 space-y-1.5 no-scrollbar overflow-y-auto overflow-x-hidden">
-        {employeeMenuItems.map((item) => {
+        {menuItems.map((item) => {
           const Icon = item.icon;
           return (
             <NavLink
