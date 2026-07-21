@@ -79,7 +79,7 @@ const ComingSoon: React.FC<ComingSoonProps> = ({
 
         {/* Action Button */}
         <button
-          onClick={() => navigate('/dashboard')}
+          onClick={() => navigate('/employee/dashboard')}
           className="mt-8 w-full group bg-gray-900 hover:bg-black text-white text-sm font-bold py-3.5 px-6 rounded-2xl flex items-center justify-center gap-2 transition-all shadow-md shadow-gray-900/10 hover:shadow-lg"
         >
           <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
