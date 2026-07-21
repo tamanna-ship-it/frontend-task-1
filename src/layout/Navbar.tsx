@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Search, Bell, PanelLeft, ChevronDown, User, Settings, LogOut } from 'lucide-react';
-import companyLogo from '../assets/company.png';
+import companyLogo from '@/assets/company.png';
 
-interface HeaderProps {
+interface NavbarProps {
   onToggleSidebar: () => void;
   isSidebarOpen: boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({ onToggleSidebar, isSidebarOpen }) => {
+const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -34,10 +34,10 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, isSidebarOpen }) => {
           className="p-2.5 rounded-xl text-gray-600 border border-transparent hover:text-violet-600 transition-colors duration-200 focus:outline-none cursor-pointer flex items-center justify-center mr-1"
           aria-label={isSidebarOpen ? "Collapse Sidebar" : "Expand Sidebar"}
         >
-          <PanelLeft className={`w-5 h-5 transition-transform duration-200`} />
+          <PanelLeft className="w-5 h-5 transition-transform duration-200" />
         </button>
         {/* Brand Logo */}
-        <img src={companyLogo} alt="logo" className='rounded-xl' />
+        <img src={companyLogo} alt="logo" className="rounded-xl" />
         {/* Welcome Greeting */}
         <div className="flex flex-col">
           <h1 className="text-xl font-bold text-gray-900 tracking-tight">Welcome Back, Rajesh</h1>
@@ -85,14 +85,12 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, isSidebarOpen }) => {
           </button>
           {isDropdownOpen && (
             <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-2xl border border-gray-100 shadow-xl py-1.5 z-50 origin-top-right overflow-hidden">
-              {/* Header profile info */}
               <div className="px-4 py-3 text-left">
                 <p className="text-sm font-bold text-gray-900 leading-tight">Rajesh</p>
                 <p className="text-xs text-gray-500 font-medium mt-1">Glamour Studio</p>
               </div>
               <div className="border-t border-gray-100 my-1" />
 
-              {/* Menu Options */}
               <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors text-left focus:outline-none border-0 bg-transparent cursor-pointer">
                 <User className="w-4 h-4 text-gray-500" />
                 <span className="font-medium">Profile</span>
@@ -117,4 +115,4 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, isSidebarOpen }) => {
   );
 };
 
-export default Header;
+export default Navbar;
