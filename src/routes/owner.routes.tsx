@@ -2,6 +2,7 @@ import type { RouteObject } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
 import DetailedReport from '@/projects/owner/pages/Reports/DetailedReport';
 import ComingSoon from '@/shared/components/ComingSoon';
+import DashboardPage from '@/pages/DashboardPage';
 import { LayoutGrid, Calendar, Users, Settings } from 'lucide-react';
 
 export const ownerRoutes: RouteObject = {
@@ -9,7 +10,7 @@ export const ownerRoutes: RouteObject = {
   children: [
     {
       index: true,
-      element: <Navigate to="reports" replace />,
+      element: <Navigate to="dashboard" replace />,
     },
     {
       path: 'reports',
@@ -17,7 +18,7 @@ export const ownerRoutes: RouteObject = {
     },
     {
       path: 'dashboard',
-      element: <ComingSoon title="Owner Dashboard" icon={LayoutGrid} />,
+      element: <DashboardPage />,
     },
     {
       path: 'appointments',
