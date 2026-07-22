@@ -1,29 +1,103 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import logo from '@/assets/logo.png';
+import logoEstetica from '@/assets/logo-esteticanow.png';
 import { employeeMenuItems } from './menu/employeeMenu';
-import { ownerMenuItems } from './menu/ownerMenu';
 import { managerMenuItems } from './menu/managerMenu';
+import { sidebarSections } from '@/shared/data/dashboardData';
 
 interface SidebarProps {
   isOpen?: boolean;
   onClose?: () => void;
 }
 
+const getOwnerPath = (label: string): string => {
+  switch (label) {
+    case 'Dashboards':
+      return '/owner/dashboard';
+    case 'Reports':
+      return '/owner/reports';
+    case 'Appointments':
+      return '/owner/appointments';
+    case 'Staff Management':
+      return '/owner/staff';
+    case 'Settings':
+      return '/owner/settings';
+    default: {
+      const slug = label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      return `/owner/${slug}`;
+    }
+  }
+};
+
 const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [tooltipPos, setTooltipPos] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
   const location = useLocation();
 
-  const menuItems = useMemo(() => {
-    if (location.pathname.startsWith('/owner')) {
-      return ownerMenuItems;
-    }
-    if (location.pathname.startsWith('/manager')) {
-      return managerMenuItems;
-    }
-    return employeeMenuItems;
-  }, [location.pathname]);
+  const isOwner = location.pathname.startsWith('/owner');
+
+  if (isOwner) {
+    return (
+      <aside
+        className={`fixed inset-y-0 left-0 md:static flex flex-col h-screen bg-[#161616] text-[#a9a9ad] select-none transition-all duration-300 ease-in-out z-30 overflow-y-auto no-scrollbar ${
+          isOpen ? 'w-64 border-r border-white/5 translate-x-0' : 'w-0 -translate-x-full overflow-hidden md:w-20 md:translate-x-0'
+        }`}
+      >
+        {/* Brand Logo */}
+        <div className="flex items-center justify-between p-5 border-b border-white/5 h-20">
+          <img src={logoEstetica} alt="esteticanow" className="h-8 object-contain" />
+          <button
+            onClick={onClose}
+            className="p-1 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white md:hidden"
+            aria-label="Close Sidebar"
+          />
+        </div>
+
+        {/* Sectioned Navigation Links */}
+        <nav className="flex-1 px-3 py-4 space-y-4">
+          {sidebarSections.map((section, idx) => (
+            <div key={section.heading || idx} className="space-y-1">
+              {section.heading && (
+                <div className="text-[11px] font-semibold tracking-wider text-[#6e6e74] uppercase px-3 py-2">
+                  {section.heading}
+                </div>
+              )}
+              {section.items.map((item) => {
+                const Icon = item.icon;
+                const path = getOwnerPath(item.label);
+                return (
+                  <NavLink
+                    key={item.label}
+                    to={path}
+                    className={({ isActive }) =>
+                      `flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 ${
+                        isActive
+                          ? 'text-[#d9cfff] font-bold bg-[#7a63e6]/15'
+                          : 'text-[#a9a9ad] hover:text-white hover:bg-white/5'
+                      }`
+                    }
+                  >
+                    {({ isActive }) => (
+                      <>
+                        <div className="flex items-center gap-3">
+                          <Icon size={18} />
+                          <span>{item.label}</span>
+                        </div>
+                        {isActive && <span className="nav-marker" />}
+                      </>
+                    )}
+                  </NavLink>
+                );
+              })}
+            </div>
+          ))}
+        </nav>
+      </aside>
+    );
+  }
+
+  const menuItems = location.pathname.startsWith('/manager') ? managerMenuItems : employeeMenuItems;
 
   return (
     <aside
