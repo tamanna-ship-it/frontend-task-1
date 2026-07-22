@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Search, Bell, PanelLeft, ChevronDown, User, Settings, LogOut } from 'lucide-react';
 import companyLogo from '@/assets/company.png';
+import { useAuth } from '@/pages/auth/AuthContext';
 
 interface NavbarProps {
   onToggleSidebar: () => void;
@@ -10,6 +12,8 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
@@ -25,14 +29,36 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen }) => {
     };
   }, []);
 
+  const handleLogout = () => {
+    logout();
+    setIsDropdownOpen(false);
+    navigate('/login', { replace: true });
+  };
+
+  const getRoleLabel = () => {
+    if (user?.role === 'owner') return 'Owner';
+    if (user?.role === 'manager') return 'Manager';
+    return 'Staff';
+  };
+
+  const getInitials = () => {
+    if (!user?.name) return 'US';
+    return user.name
+      .split(' ')
+      .map((n) => n[0])
+      .join('')
+      .substring(0, 2)
+      .toUpperCase();
+  };
+
   return (
     <header className="h-20 bg-white border-b border-gray-100 flex items-center justify-between px-8 select-none z-10">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3">
         {/* Sidebar Toggle */}
         <button
           onClick={onToggleSidebar}
           className="p-2.5 rounded-xl text-gray-600 border border-transparent hover:text-violet-600 transition-colors duration-200 focus:outline-none cursor-pointer flex items-center justify-center mr-1"
-          aria-label={isSidebarOpen ? "Collapse Sidebar" : "Expand Sidebar"}
+          aria-label={isSidebarOpen ? 'Collapse Sidebar' : 'Expand Sidebar'}
         >
           <PanelLeft className="w-5 h-5 transition-transform duration-200" />
         </button>
@@ -40,7 +66,14 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen }) => {
         <img src={companyLogo} alt="logo" className="rounded-xl" />
         {/* Welcome Greeting */}
         <div className="flex flex-col">
-          <h1 className="text-xl font-bold text-gray-900 tracking-tight">Welcome Back, Rajesh</h1>
+          <div className="flex items-center gap-2">
+            <h1 className="text-xl font-bold text-gray-900 tracking-tight">
+              Welcome Back, {user?.name || 'User'}
+            </h1>
+            <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-violet-100 text-violet-700 uppercase tracking-wider">
+              {getRoleLabel()}
+            </span>
+          </div>
           <p className="text-xs text-gray-500 font-medium mt-0.5">
             Hello, here you can manage your orders by zone
           </p>
@@ -76,18 +109,27 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen }) => {
             aria-expanded={isDropdownOpen}
           >
             <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-violet-600 to-indigo-500 flex items-center justify-center font-bold text-white text-sm shadow-md">
-              RA
+              {getInitials()}
             </div>
             <div className="flex items-center gap-1.5 text-left">
-              <span className="text-sm font-semibold text-gray-800 group-hover:text-violet-600 transition-colors">Rajesh</span>
-              <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+              <span className="text-sm font-semibold text-gray-800 group-hover:text-violet-600 transition-colors">
+                {user?.name || 'User'}
+              </span>
+              <ChevronDown
+                className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''
+                  }`}
+              />
             </div>
           </button>
           {isDropdownOpen && (
             <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-2xl border border-gray-100 shadow-xl py-1.5 z-50 origin-top-right overflow-hidden">
               <div className="px-4 py-3 text-left">
-                <p className="text-sm font-bold text-gray-900 leading-tight">Rajesh</p>
-                <p className="text-xs text-gray-500 font-medium mt-1">Glamour Studio</p>
+                <p className="text-sm font-bold text-gray-900 leading-tight">
+                  {user?.name || 'User'}
+                </p>
+                <p className="text-xs text-gray-500 font-medium mt-1">
+                  Role: <span className="font-semibold text-violet-600">{getRoleLabel()}</span>
+                </p>
               </div>
               <div className="border-t border-gray-100 my-1" />
 
@@ -103,7 +145,10 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen }) => {
 
               <div className="border-t border-gray-100 my-1" />
 
-              <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-rose-600 hover:bg-rose-50/50 transition-colors text-left focus:outline-none border-0 bg-transparent cursor-pointer">
+              <button
+                onClick={handleLogout}
+                className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-rose-600 hover:bg-rose-50/50 transition-colors text-left focus:outline-none border-0 bg-transparent cursor-pointer"
+              >
                 <LogOut className="w-4 h-4 text-rose-500" />
                 <span className="font-semibold">Logout</span>
               </button>

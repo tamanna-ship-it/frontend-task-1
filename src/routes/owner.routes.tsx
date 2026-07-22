@@ -2,7 +2,7 @@ import type { RouteObject } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
 import DetailedReport from '@/projects/owner/pages/Reports/DetailedReport';
 import ComingSoon from '@/shared/components/ComingSoon';
-import DashboardPage from '@/pages/DashboardPage';
+import DashboardPage from '@/projects/owner/pages/dashboard/DashboardPage';
 import { LayoutGrid, Calendar, Users, Settings } from 'lucide-react';
 
 export const ownerRoutes: RouteObject = {

@@ -1,8 +1,8 @@
-import { HeaderStrip, GreetingRow } from '@/projects/owner/pages/dashboard/HeaderSections';
-import { EmployeeStatus, KpiOverview, LiveServiceFloor, NewVsReturning, RevenueBreakdown } from '@/projects/owner/pages/dashboard/InsightsSections';
-import { BestPerformers, ProductsExpiring, SalesCollections } from '@/projects/owner/pages/dashboard/PerformanceSections';
-import { InventoryStatusCard, MembershipsCard, PerformanceRatesCard, ToDoOverviewCard } from '@/projects/owner/pages/dashboard/OperationsSections';
-import { RecentActivity } from '@/projects/owner/pages/dashboard/ActivitySection';
+import { HeaderStrip, GreetingRow } from '@/projects/owner/pages/dashboard/components/HeaderSections';
+import { EmployeeStatus, KpiOverview, LiveServiceFloor, NewVsReturning, RevenueBreakdown } from '@/projects/owner/pages/dashboard/components/InsightsSections';
+import { BestPerformers, ProductsExpiring, SalesCollections } from '@/projects/owner/pages/dashboard/components/PerformanceSections';
+import { InventoryStatusCard, MembershipsCard, PerformanceRatesCard, ToDoOverviewCard } from '@/projects/owner/pages/dashboard/components/OperationsSections';
+import { RecentActivity } from '@/projects/owner/pages/dashboard/components/ActivitySection';
 
 export default function DashboardPage() {
   return (
