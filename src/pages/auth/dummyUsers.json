@@ -1,0 +1,51 @@
+{
+    "owners": [
+        {
+            "id": "1",
+            "username": "ownershubhang",
+            "email": "shubhang@esteticanow.com",
+            "password": "shubhang123",
+            "name": "Shubhang",
+            "role": "owner",
+            "salonName": "Estetica Luxury Spa & Salon"
+        },
+        {
+            "id": "2",
+            "username": "ownerkranthi",
+            "email": "kranthi@esteticanow.com",
+            "password": "kranthi123",
+            "name": "Kranthi",
+            "role": "owner",
+            "salonName": "Estetica Downtown Studio"
+        },
+        {
+            "id": "3",
+            "username": "ownerrishita",
+            "email": "rishita@esteticanow.com",
+            "password": "rishita123",
+            "name": "Rishita",
+            "role": "owner",
+            "salonName": "Estetica Studio"
+        }
+    ],
+    "managers": [
+        {
+            "id": "1",
+            "username": "manager",
+            "email": "manager@esteticanow.com",
+            "password": "manager123",
+            "name": "Manager",
+            "role": "manager",
+            "branch": "Main Branch (Bandra)"
+        }
+    ],
+    "staff": [
+        {
+            "id": "1",
+            "phone": "9490654019",
+            "name": "Shubhang",
+            "role": "employee",
+            "specialization": "Hair Stylist"
+        }
+    ]
+}

@@ -14,6 +14,7 @@ import {
   Building2,
   UserCheck
 } from 'lucide-react';
+import dummyUsers from '@/pages/auth/dummyUsers.json';
 
 export const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -30,8 +31,8 @@ export const Login: React.FC = () => {
 
   // Management State
   const [managementRole, setManagementRole] = useState<'owner' | 'manager'>('owner');
-  const [username, setUsername] = useState('owner');
-  const [password, setPassword] = useState('password123');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [mgmtError, setMgmtError] = useState('');
 
@@ -65,40 +66,50 @@ export const Login: React.FC = () => {
     navigate('/employee/dashboard', { replace: true });
   };
 
-  // Handle Management Login
+  // Handle Management Login with Dummy Users Validation
   const handleManagementLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setMgmtError('');
 
-    if (!username.trim()) {
+    const trimmedUser = username.trim().toLowerCase();
+    const trimmedPass = password.trim();
+
+    if (!trimmedUser) {
       setMgmtError('Please enter your username or email.');
       return;
     }
 
-    if (!password) {
+    if (!trimmedPass) {
       setMgmtError('Please enter your password.');
       return;
     }
 
-    if (managementRole === 'owner') {
-      loginOwner(username.trim());
-      navigate('/owner/dashboard', { replace: true });
+    const availableUsers = managementRole === 'owner' ? dummyUsers.owners : dummyUsers.managers;
+
+    const matchedUser = availableUsers.find(
+      (u) =>
+        (u.username.toLowerCase() === trimmedUser || u.email.toLowerCase() === trimmedUser) &&
+        u.password === trimmedPass
+    );
+
+    if (matchedUser) {
+      if (managementRole === 'owner') {
+        loginOwner(matchedUser.username, matchedUser);
+        navigate('/owner/dashboard', { replace: true });
+      } else {
+        loginManager(matchedUser.username, matchedUser);
+        navigate('/manager/dashboard', { replace: true });
+      }
     } else {
-      loginManager(username.trim());
-      navigate('/manager/dashboard', { replace: true });
+      setMgmtError('Invalid credentials. Please select or enter valid dummy user details.');
     }
   };
 
-  // Pre-fill helpers for management credentials
-  const fillManagementCredentials = (role: 'owner' | 'manager') => {
+  // Role Switcher (Clears input fields)
+  const switchManagementRole = (role: 'owner' | 'manager') => {
     setManagementRole(role);
-    if (role === 'owner') {
-      setUsername('owner');
-      setPassword('password123');
-    } else {
-      setUsername('manager');
-      setPassword('password123');
-    }
+    setUsername('');
+    setPassword('');
     setMgmtError('');
   };
 
@@ -295,7 +306,7 @@ export const Login: React.FC = () => {
               <div className="grid grid-cols-2 gap-2 mb-5 p-1 bg-gray-100/80 rounded-xl">
                 <button
                   type="button"
-                  onClick={() => fillManagementCredentials('owner')}
+                  onClick={() => switchManagementRole('owner')}
                   className={`py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer border-0 ${managementRole === 'owner'
                     ? 'bg-white text-purple-700 shadow-sm'
                     : 'text-gray-500 hover:text-gray-800'
@@ -306,7 +317,7 @@ export const Login: React.FC = () => {
                 </button>
                 <button
                   type="button"
-                  onClick={() => fillManagementCredentials('manager')}
+                  onClick={() => switchManagementRole('manager')}
                   className={`py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer border-0 ${managementRole === 'manager'
                     ? 'bg-white text-purple-700 shadow-sm'
                     : 'text-gray-500 hover:text-gray-800'
@@ -334,7 +345,7 @@ export const Login: React.FC = () => {
                         setUsername(e.target.value);
                         if (mgmtError) setMgmtError('');
                       }}
-                      placeholder="Enter username"
+                      placeholder="Enter username or email"
                       className="w-full pl-10 pr-4 py-3 bg-[#F8F8FC] border border-gray-200 focus:border-[#6C5CE7] focus:ring-4 focus:ring-[#6C5CE7]/10 rounded-2xl text-sm font-medium text-gray-900 focus:outline-none transition-all"
                     />
                   </div>

@@ -7,14 +7,17 @@ export interface AuthUser {
   name: string;
   phone?: string;
   username?: string;
+  email?: string;
+  salonName?: string;
+  branch?: string;
 }
 
 interface AuthContextType {
   user: AuthUser | null;
   isAuthenticated: boolean;
-  loginStaff: (phone: string) => void;
-  loginOwner: (username: string) => void;
-  loginManager: (username: string) => void;
+  loginStaff: (phone: string, name?: string) => void;
+  loginOwner: (username: string, details?: Partial<AuthUser>) => void;
+  loginManager: (username: string, details?: Partial<AuthUser>) => void;
   logout: () => void;
 }
 
@@ -40,29 +43,33 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   }, [user]);
 
-  const loginStaff = (phone: string) => {
+  const loginStaff = (phone: string, name?: string) => {
     const newUser: AuthUser = {
       role: 'employee',
-      name: 'Staff Employee',
+      name: name,
       phone,
     };
     setUser(newUser);
   };
 
-  const loginOwner = (username: string) => {
+  const loginOwner = (username: string, details?: Partial<AuthUser>) => {
     const newUser: AuthUser = {
       role: 'owner',
-      name: username ? username : 'Studio Owner',
+      name: details?.name,
       username,
+      email: details?.email,
+      salonName: details?.salonName,
     };
     setUser(newUser);
   };
 
-  const loginManager = (username: string) => {
+  const loginManager = (username: string, details?: Partial<AuthUser>) => {
     const newUser: AuthUser = {
       role: 'manager',
-      name: username ? username : 'Store Manager',
+      name: details?.name,
       username,
+      email: details?.email,
+      branch: details?.branch,
     };
     setUser(newUser);
   };
